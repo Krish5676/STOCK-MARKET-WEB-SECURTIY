@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Trade</title>
+
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="main">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h2>TradeX</h2>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/trade">Trade</a>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+<h2><i class="fas fa-chart-line"></i> Trade Stocks</h2>
+
+<div class="form-box">
+<form method="POST">
+
+<input id="stock" name="stock" placeholder="Stock (RELIANCE)">
+<input type="number" name="qty" placeholder="Quantity">
+
+<select name="type">
+<option value="BUY">Buy</option>
+<option value="SELL">Sell</option>
+</select>
+
+<button>Proceed</button>
+
+</form>
+</div>
+
+<canvas id="chart"></canvas>
+
+</div>
+</div>
+
+<script>
+document.getElementById("stock").addEventListener("change", function() {
+
+fetch("/stock_data/" + this.value)
+.then(res => res.json())
+.then(data => {
+
+new Chart(document.getElementById("chart"), {
+type: 'line',
+data: {
+labels: data.dates,
+datasets: [{
+label: "Stock Price",
+data: data.prices,
+borderWidth: 2
+}]
+}
+});
+
+});
+
+});
+</script>
+
+</body>
+</html>
